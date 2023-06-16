@@ -12,7 +12,6 @@ export default () => ({
     username: process.env.PG_USERNAME,
     password: process.env.PG_PASSWORD,
     db_name: process.env.PG_DB_NAME,
-    ssl: process.env.PG_SSL,
   },
 });
 
@@ -30,6 +29,5 @@ export type ConfigType = {
     username: string;
     password: string;
     db_name: string;
-    ssl: string;
   };
 };
