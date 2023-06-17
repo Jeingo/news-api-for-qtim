@@ -13,13 +13,10 @@ export class User {
   id: number;
 
   @Column('varchar', { length: 100 })
-  login: string;
+  email: string;
 
   @Column('varchar', { length: 100 })
   hash: string;
-
-  @Column('varchar', { length: 100 })
-  email: string;
 
   @Column('timestamptz')
   createdAt: Date;
