@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Post } from '../posts/post.entity';
+import { Session } from '../sessions/session.entity';
 
 @Entity('Users')
 export class User {
@@ -23,4 +24,7 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Session, (session) => session.user)
+  sessions: Session[];
 }
