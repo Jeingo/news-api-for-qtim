@@ -21,8 +21,8 @@ export class SessionRepository {
       secret: this.configService.get('jwt_refresh_secret'),
     });
 
-    const issueAt = result.iat * 1000;
-    const expireAt = result.exp * 1000;
+    const issueAt = new Date(result.iat * 1000);
+    const expireAt = new Date(result.exp * 1000);
     const userId = result.userId;
 
     const session = await this.sessionsRepository.create({
@@ -30,6 +30,8 @@ export class SessionRepository {
       issueAt: issueAt,
       userId: userId,
     });
+
+    await this.sessionsRepository.save(session);
 
     return session;
   }

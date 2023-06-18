@@ -21,6 +21,8 @@ export class UsersRepository {
       createdAt: new Date(),
     });
 
+    await this.usersRepository.save(user);
+
     return user;
   }
 
