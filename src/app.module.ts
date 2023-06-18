@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration, { ConfigType } from './configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
-import { Post } from './posts/post.entity';
+import { Posts } from './posts/post.entity';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { UsersRepository } from './users/user.repository';
@@ -13,6 +13,10 @@ import { JwtService } from '@nestjs/jwt';
 import { SessionService } from './sessions/session.service';
 import { SessionRepository } from './sessions/session.repository';
 import { Session } from './sessions/session.entity';
+import { PostController } from './posts/post.controller';
+import { PostService } from './posts/post.service';
+import { PostRepository } from './posts/post.repository';
+import { JwtStrategy } from './utils/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -34,10 +38,10 @@ import { Session } from './sessions/session.entity';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Post, Session]),
+    TypeOrmModule.forFeature([User, Posts, Session]),
     PassportModule,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, PostController],
   providers: [
     AuthService,
     UsersRepository,
@@ -45,6 +49,9 @@ import { Session } from './sessions/session.entity';
     JwtService,
     SessionService,
     SessionRepository,
+    PostService,
+    PostRepository,
+    JwtStrategy,
   ],
 })
 export class AppModule {}

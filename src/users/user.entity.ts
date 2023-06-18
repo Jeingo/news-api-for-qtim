@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Post } from '../posts/post.entity';
+import { Posts } from '../posts/post.entity';
 import { Session } from '../sessions/session.entity';
 
 @Entity('Users')
@@ -22,8 +22,8 @@ export class User {
   @Column('timestamptz')
   createdAt: Date;
 
-  @OneToMany(() => Post, (post) => post.user)
-  posts: Post[];
+  @OneToMany(() => Posts, (post) => post.user)
+  posts: Posts[];
 
   @OneToMany(() => Session, (session) => session.user)
   sessions: Session[];
