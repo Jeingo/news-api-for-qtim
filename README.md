@@ -1,16 +1,18 @@
-## Installation
+## This is test task for qtim . News api
+
+## Installation dependencies
 
 ```bash
 $ yarn install
 ```
 
-## Docker
+## Run docker container for postgres
 
 ```bash
 $ docker-compose up -d
 ```
 
-## Run
+## Build and run app
 
 ```bash
 $ yarn build
