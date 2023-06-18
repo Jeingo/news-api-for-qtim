@@ -6,7 +6,7 @@ export type Tokens = {
 };
 
 export type RefreshTokenPayloadType = {
-  userId: string;
+  userId: number;
   exp: number;
   iat: number;
 };

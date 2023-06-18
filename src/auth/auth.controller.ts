@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { InputRegistrationUserDto } from './dto/input.registration.user.dto';
@@ -13,6 +14,9 @@ import { InputLoginUserDto } from './dto/input.login.user.dto';
 import { OutputAccessTokenDto } from './dto/output.access.token.dto';
 import { JwtAdapter } from '../adapters/jwt.service';
 import { SessionService } from '../sessions/session.service';
+import { CookieGuard } from '../utils/guards/cookie.guard';
+import { RefreshTokenPayloadType } from '../adapters/jwt.types';
+import { PayloadFromRefreshToken } from '../utils/decorators/payload.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -47,5 +51,37 @@ export class AuthController {
       httpOnly: true,
     });
     return { accessToken: accessToken };
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(CookieGuard)
+  @Post('refresh-token')
+  async refreshToken(
+    @PayloadFromRefreshToken() payload: RefreshTokenPayloadType,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<OutputAccessTokenDto> {
+    const { accessToken, refreshToken } = await this.jwtAdapter.getTokens(
+      payload.userId,
+    );
+
+    await this.sessionService.update(refreshToken);
+
+    await response.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+    });
+    return { accessToken: accessToken };
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(CookieGuard)
+  @Post('logout')
+  async logout(
+    @PayloadFromRefreshToken() payload: RefreshTokenPayloadType,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    await this.sessionService.remove(payload.userId);
+
+    response.clearCookie('refreshToken');
+    return;
   }
 }

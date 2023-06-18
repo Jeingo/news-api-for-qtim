@@ -9,4 +9,12 @@ export class SessionService {
   async create(refreshToken: Token): Promise<Session> {
     return this.sessionRepository.create(refreshToken);
   }
+
+  async update(refreshToken: Token): Promise<Session> {
+    return this.sessionRepository.update(refreshToken);
+  }
+
+  async remove(userId: number): Promise<boolean> {
+    return this.sessionRepository.remove(userId);
+  }
 }
