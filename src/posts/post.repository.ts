@@ -5,6 +5,12 @@ import { Posts } from './post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { InputUpdatePostDto } from './dto/input.update.post.dto';
+import {
+  Direction,
+  PaginatedType,
+  QueryPost,
+} from '../utils/types/pagination.type';
+import { getPaginatedType } from '../utils/helper/getPaginatedType';
 
 @Injectable()
 export class PostRepository {
@@ -37,6 +43,27 @@ export class PostRepository {
   async getById(postId: number): Promise<Posts> {
     const post = await this.postsRepository.findOneBy({ id: postId });
     return post;
+  }
+
+  async getAll(query: QueryPost): Promise<PaginatedType<Posts>> {
+    const {
+      sortBy = 'createdAt',
+      sortDirection = Direction.DESC,
+      pageNumber = 1,
+      pageSize = 10,
+    } = query;
+
+    const skipNumber = (+pageNumber - 1) * +pageSize;
+    const direction = sortDirection.toUpperCase() as Direction;
+
+    const [posts, count] = await this.postsRepository
+      .createQueryBuilder()
+      .orderBy(`"${sortBy}"`, direction)
+      .limit(+pageSize)
+      .offset(skipNumber)
+      .getManyAndCount();
+
+    return getPaginatedType(posts, +pageSize, +pageNumber, count);
   }
 
   async updateById(

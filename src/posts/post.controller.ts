@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Posts } from './post.entity';
@@ -19,15 +20,18 @@ import {
 import { InputCreatePostDto } from './dto/input.create.post.dto';
 import { PostService } from './post.service';
 import { InputUpdatePostDto } from './dto/input.update.post.dto';
+import { PaginatedType, QueryPost } from '../utils/types/pagination.type';
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  // @HttpCode(HttpStatus.OK)
-  // @Get()
-  // async getAllPosts(): Promise<Posts[]> {}
-  //
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  async getAllPosts(@Query() query: QueryPost): Promise<PaginatedType<Posts>> {
+    return this.postService.getAll(query);
+  }
+
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async getPostById(@Param('id') id: number): Promise<Posts> {

@@ -9,6 +9,11 @@ import { CurrentUserType } from '../utils/decorators/current.user.decorator';
 import { Posts } from './post.entity';
 import { PostRepository } from './post.repository';
 import { InputUpdatePostDto } from './dto/input.update.post.dto';
+import {
+  Direction,
+  PaginatedType,
+  QueryPost,
+} from '../utils/types/pagination.type';
 
 @Injectable()
 export class PostService {
@@ -18,6 +23,10 @@ export class PostService {
     user: CurrentUserType,
   ): Promise<Posts> {
     return this.postRepository.create(createPostDto, user);
+  }
+
+  async getAll(query: QueryPost): Promise<PaginatedType<Posts>> {
+    return this.postRepository.getAll(query);
   }
 
   async getById(postId: number): Promise<Posts> {
