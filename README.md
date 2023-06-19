@@ -6,7 +6,10 @@
 $ yarn install
 ```
 
-## Change .env for your postgres config
+## Run docker
+```bash
+$ docker-compose up -d
+```
 
 ## Build and run app
 
