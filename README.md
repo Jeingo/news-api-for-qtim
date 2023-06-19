@@ -14,3 +14,6 @@ $ yarn install
 $ yarn build
 $ yarn start
 ```
+
+## You can test this app with postman
+[Postman](Qtim.postman_collection.json)
