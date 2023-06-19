@@ -24,6 +24,9 @@ export class Posts {
   @Column('timestamptz')
   createdAt: Date;
 
+  @Column('timestamptz')
+  updatedAt: Date;
+
   @Column('integer')
   userId: number;
 
